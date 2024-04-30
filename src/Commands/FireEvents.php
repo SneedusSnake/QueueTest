@@ -45,7 +45,7 @@ class FireEvents extends Command {
                 $output->writeln("Firing event for userId {$event->userId}");
                 $topic->produce($event->userId - 1, 0, json_encode($event), 'userEvent');
                 $this->producer->poll(0);
-                if ($bufferedMessages === 10) {
+                if ($bufferedMessages === (int) $_ENV['QUEUE_BUFFERING_MAX_MESSAGES']) {
                     $this->producer->flush(100);
                     $bufferedMessages = 1;
                 }
@@ -62,7 +62,7 @@ class FireEvents extends Command {
     private function createTopic(): Topic
     {
         $topicConfig = new TopicConf();
-        $topicConfig->set('message.timeout.ms', 1000);
+        $topicConfig->set('message.timeout.ms', $_ENV['MESSAGE_TIMEOUT_MS']);
 
         return $this->producer->newTopic('test', $topicConfig);
     }
