@@ -22,7 +22,7 @@ class FireEvents extends Command {
 
     protected function configure(): void
     {
-        $this->addArgument('events', InputArgument::OPTIONAL, 'Number of events to fire', 100);
+        $this->addArgument('events', InputArgument::OPTIONAL, 'Number of events to fire', 10000);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
